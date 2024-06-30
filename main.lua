@@ -50,12 +50,16 @@ function love.draw()
     --loop to go through a table every zombie it finds in the zombies table
     --z holds the current zombie the for loop is looking at, so we can get their x and y position
     for i,z in ipairs(zombies) do
-        love.graphics.draw(sprites.zombie, z.x, z.y)
+        love.graphics.draw(sprites.zombie, z.x, z.y, zombiePlayerAngle(z), nil, nil, sprites.zombie:getWidth() / 2, sprites.zombie:getHeight() / 2)
     end
 end
 
 function playerMouseAngle()
     return math.atan2( player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
+end
+
+function zombiePlayerAngle(enemy)
+    return math.atan2( player.y - enemy.y, player.x - enemy.x)
 end
 
 function spawnZombie()
