@@ -6,6 +6,10 @@ function love.load()
     sprites.player = love.graphics.newImage('assets/player.png')
     sprites.zombie = love.graphics.newImage('assets/zombie.png')
 
+    --zombies table will contain multiple zombies
+    zombies = {}
+
+
     --player table
     player = {}
     --player position middle of the screen
@@ -30,13 +34,36 @@ function love.update(dt)
     end
 end
 
+function love.keypressed( key )
+    if key == "space" then
+        spawnZombie()
+    end
+end
+
+
 function love.draw()
     love.graphics.draw(sprites.background, 0, 0)
 
     --refer to love.graphics.draw function on the wiki for all the params
     love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), nil, nil, sprites.player:getWidth() / 2, sprites.player:getHeight() / 2)
+
+    --loop to go through a table every zombie it finds in the zombies table
+    --z holds the current zombie the for loop is looking at, so we can get their x and y position
+    for i,z in ipairs(zombies) do
+        love.graphics.draw(sprites.zombie, z.x, z.y)
+    end
 end
 
 function playerMouseAngle()
     return math.atan2( player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
+end
+
+function spawnZombie()
+    ---this local zombie table will only contain 1 zombie
+    local zombie = {}
+    zombie.x = math.random(0, love.graphics.getWidth())
+    zombie.y = math.random(0, love.graphics.getHeight())
+    zombie.speed = 100
+    --to add local table to the zombies table mentionned earlier
+    table.insert(zombies, zombie)
 end
